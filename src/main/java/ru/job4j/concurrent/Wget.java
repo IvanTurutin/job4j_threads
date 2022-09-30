@@ -30,7 +30,7 @@ public class Wget implements Runnable {
         String fileName = "test_" + getFileName(url);
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
-            byte[] dataBuffer = new byte[1024];
+            byte[] dataBuffer = new byte[speed];
             int bytesRead;
             long timeAfter;
             long timeAtLeast;
@@ -38,7 +38,6 @@ public class Wget implements Runnable {
             long timeBefore = System.currentTimeMillis();
             LOG.debug("timeBefore = {}", timeBefore);
             while ((bytesRead = in.read(dataBuffer, 0, dataBuffer.length)) != -1) {
-                fileOutputStream.write(dataBuffer, 0, bytesRead);
                 timeAfter = System.currentTimeMillis();
                 LOG.debug("timeAfter = {}", timeAfter);
 
@@ -57,6 +56,9 @@ public class Wget implements Runnable {
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
+
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+
                 timeBefore = System.currentTimeMillis();
                 LOG.debug("timeBefore = {}", timeBefore);
             }
@@ -71,6 +73,12 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        if (args.length != 2) {
+            System.out.println("Enter two arguments. "
+                    + "The first one should be the address of the file in URL format. "
+                    + "The second should set the download speed of the file (bytes per second).");
+            return;
+        }
         String url = validURL(args[0]);
         LOG.debug("URL = {}", url);
         int speed = validInt(args[1]);
