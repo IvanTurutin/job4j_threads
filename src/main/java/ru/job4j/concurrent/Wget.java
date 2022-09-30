@@ -26,41 +26,43 @@ public class Wget implements Runnable {
 
     @Override
     public void run() {
-        String ls = System.lineSeparator();
         String fileName = "test_" + getFileName(url);
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
-            byte[] dataBuffer = new byte[speed];
+            byte[] dataBuffer = new byte[1024];
             int bytesRead;
             long timeAfter;
             long timeAtLeast;
             long timeAddition;
             long timeBefore = System.currentTimeMillis();
+            long totalRead = 0;
             LOG.debug("timeBefore = {}", timeBefore);
             while ((bytesRead = in.read(dataBuffer, 0, dataBuffer.length)) != -1) {
-                timeAfter = System.currentTimeMillis();
-                LOG.debug("timeAfter = {}", timeAfter);
-
-                timeAtLeast = (long) ((double) bytesRead / speed * 1000);
-                LOG.debug("timeAtLeast = {}", timeAtLeast);
-
-                if (timeAtLeast > (timeAfter - timeBefore)) {
-                    timeAddition = timeAtLeast - (timeAfter - timeBefore);
-                } else {
-                    timeAddition = 0;
-                }
-                LOG.debug("timeAddition = {}", timeAddition);
-
-                try {
-                    Thread.sleep(timeAddition);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
+                totalRead += bytesRead;
+                LOG.debug("totalRead = {}", totalRead);
+                if (totalRead >= speed) {
+                    timeAfter = System.currentTimeMillis();
+                    LOG.debug("timeAfter = {}", timeAfter);
+                    timeAtLeast = (long) ((double) totalRead / speed * 1000);
+                    LOG.debug("timeAtLeast = {}", timeAtLeast);
 
-                timeBefore = System.currentTimeMillis();
-                LOG.debug("timeBefore = {}", timeBefore);
+                    if (timeAtLeast > (timeAfter - timeBefore)) {
+                        timeAddition = timeAtLeast - (timeAfter - timeBefore);
+                    } else {
+                        timeAddition = 0;
+                    }
+                    LOG.debug("timeAddition = {}", timeAddition);
+
+                    try {
+                        Thread.sleep(timeAddition);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                    totalRead = 0;
+                    timeBefore = System.currentTimeMillis();
+                    LOG.debug("timeBefore = {}", timeBefore);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,12 +75,7 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        if (args.length != 2) {
-            System.out.println("Enter two arguments. "
-                    + "The first one should be the address of the file in URL format. "
-                    + "The second should set the download speed of the file (bytes per second).");
-            return;
-        }
+        validArgs(args.length);
         String url = validURL(args[0]);
         LOG.debug("URL = {}", url);
         int speed = validInt(args[1]);
@@ -106,5 +103,13 @@ public class Wget implements Runnable {
             throw new IllegalArgumentException("Enter speed in decimal format");
         }
         return rslt;
+    }
+
+    private static void validArgs(int args) {
+        if (args != 2) {
+            throw new IllegalArgumentException("Enter two arguments. "
+                    + "The first one should be the address of the file in URL format. "
+                    + "The second should set the download speed of the file (bytes per second).");
+        }
     }
 }
