@@ -20,7 +20,7 @@ public final class ParseFile {
 		return ReadWriteText.readTextFile(file, filter);
     }
 
-	public void saveContent(File file, String content) throws IOException {
+	public void saveContent(String content) throws IOException {
 		ReadWriteText.writeTextFile(file, content);
 	}
 }
