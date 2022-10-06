@@ -23,11 +23,7 @@ public class UserCache {
     public List<User> findAll() {
 		return users.entrySet()
 			.stream()
-			.map(e -> {
-				User user = User.of(e.getValue().getName());
-				user.setId(e.getKey());
-				return user;
-			})
+			.map(e -> User.of(e.getValue().getName()))
 			.collect(Collectors.toList());
     }
 }
