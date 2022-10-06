@@ -4,7 +4,8 @@ import java.io.*;
 import java.util.function.Predicate;
 
 public final class ParseFile {
-    private final File file;
+
+	private final File file;
 
     public ParseFile(File file) {
 		this.file = file;
