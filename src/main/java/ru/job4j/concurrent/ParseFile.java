@@ -1,3 +1,5 @@
+package ru.job4j.concurrent;
+
 import java.io.*;
 import java.nio.*;
 import java.util.function.Predicate;
