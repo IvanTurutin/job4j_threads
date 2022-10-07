@@ -14,7 +14,7 @@ public final class SaveContent {
         this.file = file;
     }
 
-    public void saveContent(String content) throws IOException {
+    public synchronized void saveContent(String content) throws IOException {
         try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), Charset.forName("UTF-8"))) {
             writer.write(content, 0, content.length());
         } catch (IOException e) {
