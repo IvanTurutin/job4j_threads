@@ -14,12 +14,12 @@ public final class GetContent {
 		this.file = file;
 	}
 
-    public String getContent() throws IOException {
+    public synchronized String getContent() throws IOException {
 		Predicate<Integer> filter = x -> true;
 		return readTextFile(filter);
     }
 	
-    public String getContentWithoutUnicode() throws IOException {
+    public synchronized String getContentWithoutUnicode() throws IOException {
 		Predicate<Integer> filter = x -> x < 0x80;
 		return readTextFile(filter);
     }
