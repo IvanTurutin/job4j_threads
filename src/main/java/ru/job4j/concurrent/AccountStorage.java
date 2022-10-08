@@ -12,21 +12,11 @@ public final class AccountStorage {
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
     public synchronized boolean add(Account account) {
-        boolean rslt = false;
-        if (!accounts.containsKey(account.id())) {
-            accounts.put(account.id(), account);
-            rslt = true;
-        }
-        return rslt;
+        return accounts.putIfAbsent(account.id(), account) == null;
     }
 
     public synchronized boolean update(Account account) {
-        boolean rslt = false;
-        if (accounts.containsKey(account.id())) {
-            accounts.put(account.id(), account);
-            rslt = true;
-        }
-        return rslt;
+        return accounts.replace(account.id(), account) != null;
     }
 
     public synchronized boolean delete(int id) {
