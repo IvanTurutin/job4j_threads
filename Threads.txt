@@ -1,3 +1,4 @@
 Wait и notify
   https://javarush.ru/quests/lectures/questmultithreading.level01.lecture06
+  https://www.baeldung.com/java-wait-notify
   
