@@ -32,12 +32,15 @@ public class SimpleBlockingQueue<T> {
             }
             queue.add(value);
             this.notifyAll();
+/*
+            System.out.println("producer = " + value);
+*/
         }
     }
 
     public T poll() {
         synchronized (this) {
-            while (queue.size() == 0) {
+            while (queue.size() < 1) {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
@@ -46,6 +49,9 @@ public class SimpleBlockingQueue<T> {
             }
             T rslt = queue.poll();
             this.notifyAll();
+/*
+            System.out.println("consumer = " + rslt);
+*/
             return rslt;
         }
     }

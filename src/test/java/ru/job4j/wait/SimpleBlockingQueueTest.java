@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -13,29 +12,25 @@ class SimpleBlockingQueueTest {
 
     @Test
     public void whenExecute2ThreadThen2() throws InterruptedException {
-        LinkedList<String> rslt = new LinkedList<>();
-        List<String> expect = Arrays.asList(
-                "producer = 0", "consumer = 0",
-                "producer = 1", "consumer = 1",
-                "producer = 2", "consumer = 2"
-                );
+        LinkedList<Integer> rslt = new LinkedList<>();
+        List<Integer> expect = Arrays.asList(0, 1, 2, 3, 4);
         SimpleBlockingQueue<Integer> simpleBlockingQueue = new SimpleBlockingQueue<>(1);
         Thread consumer = new Thread(() -> {
-            for (int i = 0; i < 3; i++) {
-                simpleBlockingQueue.poll();
-                rslt.add("consumer = " + i);
+            for (int i = 0; i < 5; i++) {
+
+                rslt.add(simpleBlockingQueue.poll());
             }
         });
         Thread producer = new Thread(() -> {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 5; i++) {
                 simpleBlockingQueue.offer(i);
-                rslt.add("producer = " + i);
             }
         });
-        consumer.start();
+
         producer.start();
-        consumer.join();
+        consumer.start();
         producer.join();
+        consumer.join();
         assertThat(rslt).isEqualTo(expect);
     }
 }
