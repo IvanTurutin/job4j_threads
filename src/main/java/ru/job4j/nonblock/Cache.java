@@ -13,12 +13,12 @@ public class Cache {
 
     public boolean update(Base model) throws OptimisticException {
         BiFunction<Integer, Base, Base> bi = (modelId, oldModel) -> {
-            if (oldModel.getVersion() == model.getVersion()) {
-                Base modelForUpdate = new Base(modelId, oldModel.getVersion() + 1);
-                modelForUpdate.setName(model.getName());
-                return modelForUpdate;
+            if (oldModel.getVersion() != model.getVersion()) {
+                throw new OptimisticException("Versions do not match.");
             }
-            throw new OptimisticException("Versions do not match.");
+            Base modelForUpdate = new Base(modelId, oldModel.getVersion() + 1);
+            modelForUpdate.setName(model.getName());
+            return modelForUpdate;
         };
         return memory.computeIfPresent(model.getId(), bi) != null;
     }
