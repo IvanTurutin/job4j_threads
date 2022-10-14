@@ -28,7 +28,7 @@ class CASCountTest {
 
 
     @Test
-    public void whenOneThreadCouner() {
+    public void whenOneThreadCounter() {
         int numbOfCount = 1000;
         CASCount counter = new CASCount();
         for (int i = 0; i < numbOfCount; i++) {
