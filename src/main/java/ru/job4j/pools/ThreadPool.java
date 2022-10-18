@@ -13,12 +13,8 @@ public class ThreadPool {
         init();
     }
 
-    public void work(Runnable job) {
-        try {
-            tasks.offer(job);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void work(Runnable job) throws InterruptedException {
+        tasks.offer(job);
     }
 
     public void shutdown() {
@@ -37,9 +33,9 @@ public class ThreadPool {
     }
 
     private class ThreadWorker extends Thread {
-        SimpleBlockingQueue<Runnable> tasks;
+        private SimpleBlockingQueue<Runnable> tasks;
 
-        ThreadWorker(SimpleBlockingQueue<Runnable> tasks) {
+        public ThreadWorker(SimpleBlockingQueue<Runnable> tasks) {
             this.tasks = tasks;
         }
 
