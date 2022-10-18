@@ -14,11 +14,11 @@ public class EmailNotification {
 			@Override
 			public void run() {
 				String subject = String.format(
-						"subject = Notification %s to email %s",
+						"Notification %s to email %s",
 						user.username(), user.email()
 				);
 				String body = String.format(
-						"body = Add a new event to %s", user.username()
+						"Add a new event to %s", user.username()
 				);
 				send(subject, body, user.email());
 			}
