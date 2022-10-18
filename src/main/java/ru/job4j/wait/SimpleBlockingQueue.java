@@ -24,10 +24,10 @@ public class SimpleBlockingQueue<T> {
     public void offer(T value) throws InterruptedException {
         synchronized (this) {
             while (queue.size() >= queueLength) {
-                this.wait();
+                wait();
             }
             queue.add(value);
-            this.notifyAll();
+            notifyAll();
 /*
             System.out.println("producer = " + value);
 */
@@ -37,10 +37,10 @@ public class SimpleBlockingQueue<T> {
     public T poll() throws InterruptedException {
         synchronized (this) {
             while (queue.isEmpty()) {
-                this.wait();
+                wait();
             }
             T rslt = queue.poll();
-            this.notifyAll();
+            notifyAll();
 /*
             System.out.println("consumer = " + rslt);
 */
