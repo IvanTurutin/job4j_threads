@@ -15,13 +15,9 @@ class FindIndexTest {
 
     @Test
     void whenTenElementsIntegerArray() {
-        Integer[] ints = new Integer[] {10, 1, 9, 2, 8, 3, 7, 4, 6, 5};
-        List<Integer> array = Arrays.asList(ints);
-        FindIndex<Integer> findIndex = new FindIndex<>(array, 2, 0, array.size() - 1);
-        ForkJoinPool forkJoinPool = new ForkJoinPool();
-        List<Integer> results = forkJoinPool.invoke(findIndex);
-        assertFalse(results.isEmpty());
-        assertThat(results.get(0)).isEqualTo(3);
+        Integer[] array = new Integer[] {10, 1, 9, 2, 8, 3, 7, 4, 6, 5};
+        int result = FindIndex.find(array, 2);
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
