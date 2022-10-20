@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.ForkJoinPool;
+import java.util.Arrays;
+import java.lang.Thread;
 
-public class FindIndex<T> extends RecursiveTask<List<Integer>> {
+public class FindIndex<T> extends RecursiveTask<Integer> {
 
     private final List<T> dataArray;
     private final T target;
     private final int from;
     private final int to;
-    private final List<Integer> results = new ArrayList<>();
+    private Integer rslt = -1;
 
     public FindIndex(List<T> dataArray, T target, int from, int to) {
         this.dataArray = dataArray;
@@ -21,23 +24,50 @@ public class FindIndex<T> extends RecursiveTask<List<Integer>> {
     }
 
     @Override
-    protected List<Integer> compute() {
+    protected Integer compute() {
         if (to - from <= 10) {
-            for (int i = from; i <= to; i++) {
-                if (Objects.equals(dataArray.get(i), target)) {
-                    results.add(i);
-                }
-            }
-            return results;
+			return findIndex();
         }
 
         int mid = (from + to) / 2;
-        FindIndex<T> leftSide = new FindIndex<>(dataArray, target, from, mid);
-        FindIndex<T> rightSide = new FindIndex<>(dataArray, target, mid + 1, to);
-        leftSide.fork();
-        rightSide.fork();
-        results.addAll(leftSide.join());
-        results.addAll(rightSide.join());
-        return results;
+		FindIndex<T> leftSide = new FindIndex<>(dataArray, target, from, mid);
+		FindIndex<T> rightSide = new FindIndex<>(dataArray, target, mid + 1, to);
+		leftSide.fork();
+		rightSide.fork();
+		
+		int tmp = leftSide.join();
+		if (tmp >= 0) {
+			return tmp;
+		}
+		
+		tmp = rightSide.join();
+		if (tmp >= 0) {
+			return tmp;
+		}
+
+        return rslt;
     }
+	
+	private Integer findIndex() {
+		/*
+		System.out.println(Thread.currentThread().getName() + "  " + System.currentTimeMillis());
+		*/
+		for (int i = from; i <= to; i++) {
+            if (Objects.equals(dataArray.get(i), target)) {
+				/*
+				System.out.println("Find target with index = " + i);
+				*/
+				return i;
+            }
+        }
+        return -1;
+	}
+    
+    public static <T> Integer find(T[] array, T target) {
+		List<T> dataArray = Arrays.asList(array);
+		ForkJoinPool forkJoinPool = new ForkJoinPool();
+		FindIndex<T> findIndex = new FindIndex<>(dataArray, target, 0, dataArray.size() - 1);
+		return forkJoinPool.invoke(findIndex);
+	}
+    
 }
