@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class RowColSum {
     private static final Logger LOG = LoggerFactory.getLogger(RowColSum.class.getName());
 
@@ -44,7 +43,6 @@ public class RowColSum {
     public static Sums[] sum(int[][] matrix) {
         int length = matrix.length;
         Sums[] sums = new Sums[length];
-
         int rowSum;
         int colSum;
         for (int i = 0; i < length; i++) {
@@ -80,7 +78,6 @@ public class RowColSum {
         return sums;
     }
 
-
     private static CompletableFuture<Sums> getSums(int[][] matrix, int dimension) {
         return CompletableFuture.supplyAsync(
                 () -> {
@@ -103,5 +100,4 @@ public class RowColSum {
                 }
         );
     }
-
 }
