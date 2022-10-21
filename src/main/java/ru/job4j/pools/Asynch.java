@@ -90,7 +90,7 @@ public class Asynch {
 	
 	public static void thenComposeExample() throws Exception {
 		CompletableFuture<String> result = goToTrash().thenCompose(a -> buyProduct("Milk"));
-		System.out.println(Thread.currentThread().getName() + "  " + result.get()); // wait calculations;
+		System.out.println(Thread.currentThread().getName() + "  " + result.get());
 	}
 	
 	public static void thenCombineExample() throws Exception {
