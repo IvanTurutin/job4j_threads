@@ -15,9 +15,9 @@ class FindIndexTest {
 
     @Test
     void whenTenElementsIntegerArray() {
-        Integer[] array = new Integer[] {10, 1, 9, 2, 8, 3, 7, 4, 6, 5};
+        Integer[] array = new Integer[] {10, 2, 9, 2, 8, 3, 7, 4, 6, 5};
         int result = FindIndex.find(array, 2);
-        assertThat(result).isEqualTo(3);
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -29,9 +29,9 @@ class FindIndexTest {
 
     @Test
     void whenTenElementsStringArray() {
-        String[] array = new String[] {"10", "1", "9", "2", "8", "3", "7", "4", "6", "5"};
+        String[] array = new String[] {"10", "2", "9", "2", "8", "3", "7", "4", "6", "5"};
         int result = FindIndex.find(array, "2");
-        assertThat(result).isEqualTo(3);
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -60,8 +60,8 @@ class FindIndexTest {
                 "10", "1", "9", "2", "8", "3",
                 "10", "1", "9", "2", "8", "151"
         };
-        int result = FindIndex.find(array, "151");
-        assertThat(result).isEqualTo(111);
+        int result = FindIndex.find(array, "1");
+        assertThat(result).isEqualTo(107);
     }
 
     @Test

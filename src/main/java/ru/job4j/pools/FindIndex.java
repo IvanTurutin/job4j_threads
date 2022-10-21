@@ -1,10 +1,8 @@
 package ru.job4j.pools;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.ForkJoinPool;
-import java.util.Arrays;
 import java.lang.Thread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +10,14 @@ import ru.job4j.concurrent.Wget;
 
 
 public class FindIndex<T> extends RecursiveTask<Integer> {
-    private final List<T> dataArray;
+    private final T[] dataArray;
     private final T target;
     private final int from;
     private final int to;
     private final static Integer NOT_FOUND = -1;
     private static final Logger LOG = LoggerFactory.getLogger(Wget.class.getName());
 
-    public FindIndex(List<T> dataArray, T target, int from, int to) {
+    public FindIndex(T[] dataArray, T target, int from, int to) {
         this.dataArray = dataArray;
         this.target = target;
         this.from = from;
@@ -38,6 +36,7 @@ public class FindIndex<T> extends RecursiveTask<Integer> {
         leftSide.fork();
         rightSide.fork();
 
+/*
         int tmp;
         tmp = leftSide.join();
         if (tmp >= 0) {
@@ -50,13 +49,14 @@ public class FindIndex<T> extends RecursiveTask<Integer> {
         }
 
         return NOT_FOUND;
+*/
+        return Math.max(leftSide.join(), rightSide.join());
     }
 
     private Integer findIndex() {
         LOG.debug(Thread.currentThread().getName() + ": time = " + System.currentTimeMillis());
         for (int i = from; i <= to; i++) {
-            if (Objects.equals(dataArray.get(i), target)) {
-
+            if (Objects.equals(dataArray[i], target)) {
                 LOG.debug(Thread.currentThread().getName() + ": target found with index = " + i);
                 return i;
             }
@@ -66,9 +66,8 @@ public class FindIndex<T> extends RecursiveTask<Integer> {
     }
 
     public static <T> Integer find(T[] array, T target) {
-        List<T> dataArray = Arrays.asList(array);
         ForkJoinPool forkJoinPool = new ForkJoinPool();
-        FindIndex<T> findIndex = new FindIndex<>(dataArray, target, 0, dataArray.size() - 1);
+        FindIndex<T> findIndex = new FindIndex<>(array, target, 0, array.length - 1);
         return forkJoinPool.invoke(findIndex);
     }
 }
