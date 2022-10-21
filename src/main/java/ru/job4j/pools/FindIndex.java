@@ -14,7 +14,8 @@ public class FindIndex<T> extends RecursiveTask<Integer> {
     private final T target;
     private final int from;
     private final int to;
-    private final static Integer NOT_FOUND = -1;
+    private final static int NOT_FOUND = -1;
+    private final static int LENGTH_OF_TASK = 10;
     private static final Logger LOG = LoggerFactory.getLogger(Wget.class.getName());
 
     public FindIndex(T[] dataArray, T target, int from, int to) {
@@ -26,7 +27,7 @@ public class FindIndex<T> extends RecursiveTask<Integer> {
 
     @Override
     protected Integer compute() {
-        if (to - from <= 10) {
+        if (to - from <= LENGTH_OF_TASK) {
             return findIndex();
         }
 
@@ -53,7 +54,7 @@ public class FindIndex<T> extends RecursiveTask<Integer> {
         return Math.max(leftSide.join(), rightSide.join());
     }
 
-    private Integer findIndex() {
+    private int findIndex() {
         LOG.debug(Thread.currentThread().getName() + ": time = " + System.currentTimeMillis());
         for (int i = from; i <= to; i++) {
             if (Objects.equals(dataArray[i], target)) {
