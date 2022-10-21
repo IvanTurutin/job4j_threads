@@ -1,9 +1,5 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.RecursiveTask;
-import java.util.concurrent.ForkJoinPool;
-import java.util.Arrays;
+package ru.job4j.pools;
+
 import java.lang.Thread;
 import java.util.concurrent.TimeUnit;
 import java.lang.InterruptedException;
@@ -104,13 +100,55 @@ public class Asynch {
 		System.out.println(Thread.currentThread().getName() + "  " + result.get());
 	}
 
-	
-	public static void main(String args[]) throws Exception {
+	public static CompletableFuture<Void> washHands(String name) {
+		return CompletableFuture.runAsync(() -> {
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(Thread.currentThread().getName() + "  " + name + ", wash hands");
+		});
+	}
+
+	public static void allOfExample() throws Exception {
+		CompletableFuture<Void> all = CompletableFuture.allOf(
+				washHands("Dad"), washHands("Mom"),
+				washHands("Ivan"), washHands("Boris")
+		);
+		iWork();
+		TimeUnit.SECONDS.sleep(3);
+	}
+
+	public static CompletableFuture<String> whoWashHands(String name) {
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return Thread.currentThread().getName() + "  " + name + ", wash hands";
+		});
+	}
+
+	public static void anyOfExample() throws Exception {
+		CompletableFuture<Object> first = CompletableFuture.anyOf(
+				whoWashHands("Dad"), whoWashHands("Mom"),
+				whoWashHands("Ivan"), whoWashHands("Boris")
+		);
+		System.out.println(Thread.currentThread().getName() + "  " + "Who is washing hands now?");
+		TimeUnit.SECONDS.sleep(1);
+		System.out.println(Thread.currentThread().getName() + "  " + first.get());
+	}
+
+	public static void main(String[] args) throws Exception {
 		//runAsyncExample();
 		//supplyAsyncExample();
 		//System.out.println(Thread.currentThread().getName() + "  " + supplyAsyncThenAsseptExample());
 		//thenApplyExample();
 		//thenComposeExample();
-		thenCombineExample();
+		//thenCombineExample();
+		//allOfExample();
+		anyOfExample();
 	}
 }

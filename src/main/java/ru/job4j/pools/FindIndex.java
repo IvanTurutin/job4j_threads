@@ -6,7 +6,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.lang.Thread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.job4j.concurrent.Wget;
 
 
 public class FindIndex<T> extends RecursiveTask<Integer> {
