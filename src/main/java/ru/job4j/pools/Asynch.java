@@ -142,13 +142,13 @@ public class Asynch {
 	}
 
 	public static void main(String[] args) throws Exception {
-		//runAsyncExample();
-		//supplyAsyncExample();
-		//System.out.println(Thread.currentThread().getName() + "  " + supplyAsyncThenAsseptExample());
-		//thenApplyExample();
-		//thenComposeExample();
-		//thenCombineExample();
-		//allOfExample();
+		runAsyncExample();
+		supplyAsyncExample();
+		System.out.println(Thread.currentThread().getName() + "  " + supplyAsyncThenAsseptExample());
+		thenApplyExample();
+		thenComposeExample();
+		thenCombineExample();
+		allOfExample();
 		anyOfExample();
 	}
 }
