@@ -16,7 +16,7 @@ public class FindIndex<T> extends RecursiveTask<Integer> {
     private final int to;
     private final static int NOT_FOUND = -1;
     private final static int TASK_LENGTH = 10;
-    private static final Logger LOG = LoggerFactory.getLogger(Wget.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FindIndex.class.getName());
 
     public FindIndex(T[] dataArray, T target, int from, int to) {
         this.dataArray = dataArray;
