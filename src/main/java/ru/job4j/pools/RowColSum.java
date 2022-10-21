@@ -38,6 +38,7 @@ public class RowColSum {
         public void setColSum(int colSum) {
             this.colSum = colSum;
         }
+
     }
 
     public static Sums[] sum(int[][] matrix) {
