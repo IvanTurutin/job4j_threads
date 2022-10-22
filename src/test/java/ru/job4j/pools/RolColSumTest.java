@@ -17,7 +17,7 @@ class RolColSumTest {
                 {13, 14, 15, 16}
         };
         long timeBefore = System.currentTimeMillis();
-        RowColSum.Sums[] sums = RowColSum.sum(matrix);
+        Sums[] sums = RowColSum.sum(matrix);
         long timeAfter = System.currentTimeMillis();
         assertThat(sums[0].getColSum()).isEqualTo(28);
         assertThat(sums[0].getRowSum()).isEqualTo(10);
@@ -27,7 +27,7 @@ class RolColSumTest {
         assertThat(sums[2].getRowSum()).isEqualTo(42);
         assertThat(sums[3].getColSum()).isEqualTo(40);
         assertThat(sums[3].getRowSum()).isEqualTo(58);
-        System.out.println("elapsed time = " + (timeAfter - timeBefore));
+        System.out.println("sequential computing, elapsed time = " + (timeAfter - timeBefore));
     }
 
     @Test
@@ -39,7 +39,7 @@ class RolColSumTest {
                 {13, 14, 15, 16}
         };
         long timeBefore = System.currentTimeMillis();
-        RowColSum.Sums[] sums = RowColSum.asyncSum(matrix);
+        Sums[] sums = RowColSum.asyncSum(matrix);
         long timeAfter = System.currentTimeMillis();
         assertThat(sums[0].getColSum()).isEqualTo(28);
         assertThat(sums[0].getRowSum()).isEqualTo(10);
@@ -49,7 +49,6 @@ class RolColSumTest {
         assertThat(sums[2].getRowSum()).isEqualTo(42);
         assertThat(sums[3].getColSum()).isEqualTo(40);
         assertThat(sums[3].getRowSum()).isEqualTo(58);
-        System.out.println("elapsed time = " + (timeAfter - timeBefore));
-
+        System.out.println("parallel computing, elapsed time = " + (timeAfter - timeBefore));
     }
 }
